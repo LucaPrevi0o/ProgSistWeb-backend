@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   # API routes
   resources :products, only: [:index, :show, :create, :update, :destroy]
 
+  resource :cart, only: [:show] do
+    resources :items, controller: 'cart_items', only: [:create, :update, :destroy], path: 'items'
+  end
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
