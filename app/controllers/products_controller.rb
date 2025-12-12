@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  skip_before_action :authenticate_request, only: [:index, :show]
+  before_action :require_admin, only: [:create, :update, :destroy]
   before_action :set_product, only: [:show, :update, :destroy]
 
   # GET /products

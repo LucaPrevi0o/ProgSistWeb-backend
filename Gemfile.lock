@@ -408,6 +408,7 @@ DEPENDENCIES
   faker
   image_processing (~> 1.2)
   jsonapi-serializer
+  jwt
   kamal
   puma (>= 5.0)
   rack-cors

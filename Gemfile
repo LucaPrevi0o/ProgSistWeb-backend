@@ -38,6 +38,7 @@ gem "rack-cors"
 # Autenticazione
 gem "devise"
 gem "devise-jwt"
+gem 'jwt'
 
 # Serializzazione JSON
 gem "jsonapi-serializer"
