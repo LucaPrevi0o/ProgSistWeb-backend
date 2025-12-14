@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :items, controller: 'cart_items', only: [:create, :update, :destroy], path: 'items'
   end
 
+  resource :user_info, only: [:show, :update]
+
   # Defines the root path route ("/")
   # root "posts#index"
 end

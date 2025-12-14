@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_12_151247) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_14_144809) do
+  create_table "addresses", force: :cascade do |t|
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.string "number"
+    t.string "province"
+    t.string "street"
+    t.datetime "updated_at", null: false
+    t.string "zip"
+  end
+
   create_table "cart_items", force: :cascade do |t|
     t.integer "cart_id", null: false
     t.datetime "created_at", null: false
@@ -42,6 +52,20 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_12_151247) do
     t.index ["category"], name: "index_products_on_category"
   end
 
+  create_table "user_infos", force: :cascade do |t|
+    t.integer "address_id", null: false
+    t.string "country"
+    t.datetime "created_at", null: false
+    t.string "first_name"
+    t.string "full_name"
+    t.string "last_name"
+    t.string "phone"
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["address_id"], name: "index_user_infos_on_address_id"
+    t.index ["user_id"], name: "index_user_infos_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email"
@@ -54,4 +78,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_12_151247) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
+  add_foreign_key "user_infos", "addresses"
+  add_foreign_key "user_infos", "users"
 end
