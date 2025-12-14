@@ -5,6 +5,7 @@ class CartItemsController < ApplicationController
   def create
     product = Product.find(params[:product_id])
     item = @cart.cart_items.find_or_initialize_by(product: product)
+    item.quantity = 0 if item.new_record?
     item.quantity += params[:quantity].to_i
     item.unit_price = product.price
 
