@@ -7,5 +7,5 @@ class Product < ApplicationRecord
   validates :stock_quantity, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   
   scope :by_category, ->(category) { where(category: category) if category.present? }
-  scope :search, ->(query) { where("name ILIKE ? OR description ILIKE ?", "%#{query}%", "%#{query}%") if query.present? }
+  scope :search, ->(query) { where("name LIKE ? OR description LIKE ?", "%#{query}%", "%#{query}%") if query.present? }
 end
