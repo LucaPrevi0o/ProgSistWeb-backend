@@ -1,25 +1,21 @@
 class ProductsController < ApplicationController
-  skip_before_action :authenticate_request, only: [:index, :show]
+  skip_before_action :authenticate_request, only: [:index, :show, :categories]
   before_action :require_admin, only: [:create, :update, :destroy]
   before_action :set_product, only: [:show, :update, :destroy]
 
   # GET /products
   def index
-    @products = Product.all
-    
-    # Filtro per categoria
-    @products = @products.by_category(params[:category]) if params[:category].present?
-    
-    # Ricerca testuale
-    @products = @products.search(params[:q]) if params[:q].present?
-    
-    # Paginazione (opzionale)
-    if params[:page].present?
-      per_page = params[:per_page] || 10
-      @products = @products.page(params[:page]).per(per_page)
-    end
-    
-    render json: @products
+    page = params[:page].to_i > 0 ? params[:page].to_i : 1
+    per_page = params[:per_page].to_i > 0 ? params[:per_page].to_i : 9
+
+    products = Product.all
+    products = products.where("name LIKE ?", "%#{params[:q]}%") if params[:q].present?
+    products = products.where(category: params[:category]) if params[:category].present?
+
+    total = products.count
+    products = products.offset((page - 1) * per_page).limit(per_page)
+
+    render json: { products: products, total: total, page: page, per_page: per_page }
   end
 
   # GET /products/:id
@@ -51,6 +47,12 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     head :no_content
+  end
+
+  # GET /products/categories
+  def categories
+    categories = Product.distinct.pluck(:category).compact
+    render json: categories
   end
 
   private

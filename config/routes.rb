@@ -12,7 +12,11 @@ Rails.application.routes.draw do
   post 'auth/logout', to: 'authentication#logout'
 
   # API routes
-  resources :products, only: [:index, :show, :create, :update, :destroy]
+  resources :products, only: [:index, :show, :create, :update, :destroy] do
+    collection do
+      get 'categories', to: 'products#categories'
+    end
+  end
 
   resource :cart, only: [:show] do
     resources :items, controller: 'cart_items', only: [:create, :update, :destroy], path: 'items'
